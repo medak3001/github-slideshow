@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 System Monitor - Interface Futuriste</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="scanner-line"></div>
+
+    <header class="header">
+        <div class="header-content">
+            <h1 class="title">
+                <span class="title-icon">⚡</span>
+                SYSTEM MONITOR
+                <span class="title-version">v1.0</span>
+            </h1>
+            <div class="system-time" id="systemTime"></div>
+        </div>
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-dot online"></span>
+                <span>CONNECTED</span>
+            </div>
+            <div class="status-item">
+                <span class="status-dot"></span>
+                <span id="updateRate">UPDATE: 1s</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Informations Système -->
+        <section class="panel system-info">
+            <div class="panel-header">
+                <h2>🖥️ SYSTEM INFO</h2>
+                <div class="panel-actions">
+                    <span class="badge" id="osName">LOADING...</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">MANUFACTURER</span>
+                        <span class="info-value" id="manufacturer">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">MODEL</span>
+                        <span class="info-value" id="model">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">HOSTNAME</span>
+                        <span class="info-value" id="hostname">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">UPTIME</span>
+                        <span class="info-value" id="uptime">--</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CPU -->
+        <section class="panel cpu-panel">
+            <div class="panel-header">
+                <h2>💻 PROCESSOR</h2>
+                <div class="panel-actions">
+                    <span class="value-display" id="cpuLoad">0%</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="cpu-info">
+                    <div class="cpu-brand" id="cpuBrand">Loading...</div>
+                    <div class="cpu-specs">
+                        <span id="cpuCores">-- cores</span> •
+                        <span id="cpuSpeed">-- GHz</span> •
+                        <span id="cpuTemp">-- °C</span>
+                    </div>
+                </div>
+
+                <div class="metric-bar">
+                    <div class="metric-label">
+                        <span>TOTAL LOAD</span>
+                        <span id="cpuLoadPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill cpu-progress" id="cpuProgress" style="width: 0%"></div>
+                        <div class="progress-glow"></div>
+                    </div>
+                </div>
+
+                <div class="metric-bar">
+                    <div class="metric-label">
+                        <span>USER</span>
+                        <span id="cpuUserPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill cpu-user" id="cpuUserProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-bar">
+                    <div class="metric-label">
+                        <span>SYSTEM</span>
+                        <span id="cpuSystemPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill cpu-system" id="cpuSystemProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="cores-grid" id="coresGrid"></div>
+            </div>
+        </section>
+
+        <!-- RAM -->
+        <section class="panel memory-panel">
+            <div class="panel-header">
+                <h2>🧠 MEMORY</h2>
+                <div class="panel-actions">
+                    <span class="value-display" id="memoryPercent">0%</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="memory-visual">
+                    <svg class="memory-circle" viewBox="0 0 200 200">
+                        <circle class="circle-bg" cx="100" cy="100" r="85"></circle>
+                        <circle class="circle-progress" id="memoryCircle" cx="100" cy="100" r="85"></circle>
+                        <text x="100" y="95" text-anchor="middle" class="circle-text-main" id="memoryUsedText">0 GB</text>
+                        <text x="100" y="115" text-anchor="middle" class="circle-text-sub" id="memoryTotalText">of 0 GB</text>
+                    </svg>
+                </div>
+
+                <div class="memory-details">
+                    <div class="memory-item">
+                        <span class="mem-label">USED</span>
+                        <span class="mem-value" id="memUsed">0 GB</span>
+                    </div>
+                    <div class="memory-item">
+                        <span class="mem-label">FREE</span>
+                        <span class="mem-value" id="memFree">0 GB</span>
+                    </div>
+                    <div class="memory-item">
+                        <span class="mem-label">ACTIVE</span>
+                        <span class="mem-value" id="memActive">0 GB</span>
+                    </div>
+                    <div class="memory-item">
+                        <span class="mem-label">SWAP USED</span>
+                        <span class="mem-value" id="swapUsed">0 GB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disques -->
+        <section class="panel disk-panel">
+            <div class="panel-header">
+                <h2>💾 STORAGE</h2>
+            </div>
+            <div class="panel-body" id="diskList">
+                <!-- Disques générés dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Réseau -->
+        <section class="panel network-panel">
+            <div class="panel-header">
+                <h2>🌐 NETWORK</h2>
+            </div>
+            <div class="panel-body">
+                <div class="network-stats">
+                    <div class="network-stat">
+                        <div class="stat-icon download">▼</div>
+                        <div class="stat-info">
+                            <div class="stat-label">DOWNLOAD</div>
+                            <div class="stat-value" id="downloadSpeed">0 KB/s</div>
+                            <div class="stat-total" id="downloadTotal">0 MB total</div>
+                        </div>
+                    </div>
+                    <div class="network-stat">
+                        <div class="stat-icon upload">▲</div>
+                        <div class="stat-info">
+                            <div class="stat-label">UPLOAD</div>
+                            <div class="stat-value" id="uploadSpeed">0 KB/s</div>
+                            <div class="stat-total" id="uploadTotal">0 MB total</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="networkInterfaces"></div>
+            </div>
+        </section>
+
+        <!-- I/O Disque -->
+        <section class="panel io-panel">
+            <div class="panel-header">
+                <h2>📊 DISK I/O</h2>
+            </div>
+            <div class="panel-body">
+                <div class="io-stats">
+                    <div class="io-stat">
+                        <span class="io-label">READ</span>
+                        <span class="io-value" id="diskRead">0 KB/s</span>
+                    </div>
+                    <div class="io-stat">
+                        <span class="io-label">WRITE</span>
+                        <span class="io-value" id="diskWrite">0 KB/s</span>
+                    </div>
+                    <div class="io-stat">
+                        <span class="io-label">TOTAL I/O</span>
+                        <span class="io-value" id="diskTotal">0 KB/s</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Processus -->
+        <section class="panel processes-panel">
+            <div class="panel-header">
+                <h2>⚙️ PROCESSES</h2>
+                <div class="panel-actions">
+                    <span class="badge" id="processCount">0</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="process-summary">
+                    <div class="process-stat">
+                        <span class="stat-num" id="processRunning">0</span>
+                        <span class="stat-lbl">RUNNING</span>
+                    </div>
+                    <div class="process-stat">
+                        <span class="stat-num" id="processSleeping">0</span>
+                        <span class="stat-lbl">SLEEPING</span>
+                    </div>
+                    <div class="process-stat">
+                        <span class="stat-num" id="processBlocked">0</span>
+                        <span class="stat-lbl">BLOCKED</span>
+                    </div>
+                </div>
+
+                <div class="process-list-header">
+                    <span>TOP PROCESSES (CPU)</span>
+                </div>
+                <div class="process-list" id="processList"></div>
+            </div>
+        </section>
+
+        <!-- GPU -->
+        <section class="panel gpu-panel" id="gpuPanel" style="display: none;">
+            <div class="panel-header">
+                <h2>🎮 GRAPHICS</h2>
+            </div>
+            <div class="panel-body" id="gpuList"></div>
+        </section>
+
+        <!-- Batterie -->
+        <section class="panel battery-panel" id="batteryPanel" style="display: none;">
+            <div class="panel-header">
+                <h2>🔋 BATTERY</h2>
+            </div>
+            <div class="panel-body">
+                <div class="battery-visual">
+                    <div class="battery-container">
+                        <div class="battery-level" id="batteryLevel" style="width: 0%"></div>
+                    </div>
+                    <div class="battery-percent" id="batteryPercent">0%</div>
+                </div>
+                <div class="battery-status">
+                    <span id="batteryStatus">UNKNOWN</span>
+                    <span id="batteryTime">--</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>System Monitor v1.0 - Real-time monitoring</div>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-dot online"></span>
+                <span>Live</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
