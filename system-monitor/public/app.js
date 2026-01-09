@@ -46,7 +46,8 @@ updateSystemTime();
 
 // Gestion de la connexion WebSocket
 ws.onopen = () => {
-    console.log('✅ Connecté au serveur');
+    console.log('✅ Connecté au serveur WebSocket');
+    console.log('🔗 URL:', `${protocol}//${window.location.host}`);
     updateConnectionStatus(true);
 };
 
@@ -56,7 +57,7 @@ ws.onclose = () => {
 };
 
 ws.onerror = (error) => {
-    console.error('Erreur WebSocket:', error);
+    console.error('❌ Erreur WebSocket:', error);
     updateConnectionStatus(false);
 };
 
@@ -76,8 +77,15 @@ function updateConnectionStatus(connected) {
 
 // Réception des données
 ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    updateUI(data);
+    console.log('📥 Données reçues du serveur');
+    try {
+        const data = JSON.parse(event.data);
+        console.log('📊 Données parsées:', data);
+        updateUI(data);
+    } catch (error) {
+        console.error('❌ Erreur lors du parsing des données:', error);
+        console.error('Données brutes:', event.data);
+    }
 };
 
 function updateUI(data) {
